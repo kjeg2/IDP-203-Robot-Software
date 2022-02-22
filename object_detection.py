@@ -8,6 +8,13 @@ import argparse
 import cv2
 import imutils
 import time
+#from defisheye import Defisheye
+
+#parameters for defisheye
+dtype = 'linear'
+format = 'fullframe'
+fov = 180
+pfov = 120
 
 
 # construct the argument parse and parse the arguments
@@ -23,8 +30,8 @@ cap = cv2.VideoCapture('http://localhost:8081/stream/video.mjpeg')
 # ball in the HSV color space, then initialize the
 # list of tracked points
 
-whiteLower = (99,0,127)
-whiteUpper = (176,232,235)
+whiteLower = (48,0,233)
+whiteUpper = (128,15,255)
 
 
 pts = deque(maxlen=args["buffer"])
