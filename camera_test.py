@@ -1,7 +1,7 @@
 import json
 import requests
 
-r = requests.get('https://httpbin.org/stream/20', stream=True)
+r = requests.get(url= 'http://localhost:8081/stream/video.mjpeg', stream=True)
 
 if r.encoding is None:
     r.encoding = 'utf-8'

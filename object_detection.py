@@ -16,6 +16,8 @@ ap.add_argument("-v", "--video",help="path to the (optional) video file")
 ap.add_argument("-b", "--buffer", type=int, default=64,help="max buffer size")
 args = vars(ap.parse_args())
 
+#capturing video
+cap = cv2.VideoCapture('http://localhost:8081/stream/video.mjpeg')
 
 # define the lower and upper boundaries of the "white"
 # ball in the HSV color space, then initialize the
@@ -26,18 +28,18 @@ whiteUpper = (176,232,235)
 
 
 pts = deque(maxlen=args["buffer"])
-# if a video path was not supplied, grab the reference to the webcam
+'''# if a video path was not supplied, grab the reference to the webcam
 if not args.get("video", False):
     vs = VideoStream(src=0).start()
 # otherwise, grab a reference to the video file
 else:
     vs = cv2.VideoCapture(args["video"])
 # allow the camera or video file to warm up
-time.sleep(2.0)
+time.sleep(2.0)'''
 
 while True:
     # grab the current frame
-    frame = vs.read()
+    ret, frame = cap.read()
     # handle the frame from VideoCapture or VideoStream
     frame = frame[1] if args.get("video", False) else frame
     # if we are viewing a video and we did not grab a frame,
@@ -90,11 +92,11 @@ while True:
     # if the 'q' key is pressed, stop the loop
     if key == ord("q"):
         break
-# if we are not using a video file, stop the camera video stream
+'''# if we are not using a video file, stop the camera video stream
 if not args.get("video", False):
     vs.stop()
 # otherwise, release the camera
 else:
-    vs.release()
+    vs.release()'''
 # close all windows
 cv2.destroyAllWindows()
