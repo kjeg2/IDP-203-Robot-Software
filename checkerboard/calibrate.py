@@ -3,6 +3,8 @@ assert cv2.__version__[0] >= '3', 'The fisheye module requires opencv version >=
 import numpy as np
 import os
 import glob
+import imutils
+
 CHECKERBOARD = (6,9)
 subpix_criteria = (cv2.TERM_CRITERIA_EPS+cv2.TERM_CRITERIA_MAX_ITER, 30, 0.1)
 calibration_flags = cv2.fisheye.CALIB_RECOMPUTE_EXTRINSIC+cv2.fisheye.CALIB_CHECK_COND+cv2.fisheye.CALIB_FIX_SKEW
@@ -11,9 +13,19 @@ objp[0,:,:2] = np.mgrid[0:CHECKERBOARD[0], 0:CHECKERBOARD[1]].T.reshape(-1, 2)
 _img_shape = None
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
-images = glob.glob('*.jpg')
-for fname in images:
-    img = cv2.imread(fname)
+#images = glob.glob('*.jpg')
+def load_images_from_folder(folder):
+    images = []
+    for filename in os.listdir(folder):
+        img = cv2.imread(os.path.join(folder,filename))
+        if img is not None:
+            images.append(img)
+    return images
+
+images = load_images_from_folder('checkerboard')
+
+for img in images:
+    #img = cv2.imread(fname)
     if _img_shape == None:
         _img_shape = img.shape[:2]
     else:
