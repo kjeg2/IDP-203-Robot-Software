@@ -8,6 +8,7 @@ import argparse
 import cv2
 import imutils
 import time
+from unfisheye import undistort
 #from defisheye import Defisheye
 
 #parameters for defisheye
@@ -53,17 +54,21 @@ while True:
     # then we have reached the end of the video
     if frame is None:
         break
+    #undistort the fisheye lens on the camera
+    frame = undistort(frame)
     # resize the frame, blur it, and convert it to the HSV
     # color space
-    frame = imutils.resize(frame, width=600)
-    blurred = cv2.GaussianBlur(frame, (11, 11), 0)
-    hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
+    #frame = imutils.resize(frame, width=1806)   
+
+    #blurred = cv2.GaussianBlur(frame, (11, 11), 0)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     # construct a mask for the color "white", then perform
     # a series of dilations and erosions to remove any small
     # blobs left in the mask
     mask = cv2.inRange(hsv, whiteLower, whiteUpper)
     mask = cv2.erode(mask, None, iterations=2)
     mask = cv2.dilate(mask, None, iterations=2)
+    
 
 
 # find contours in the mask and initialize the current
